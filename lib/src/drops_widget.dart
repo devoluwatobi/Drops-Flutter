@@ -1,4 +1,6 @@
+import 'package:drops/src/drop_type.dart';
 import 'package:flutter/cupertino.dart';
+import "package:flutter/material.dart";
 
 import 'drop_position.dart';
 import 'drop_shape.dart';
@@ -22,6 +24,7 @@ class Drop {
   final Color? iconColor;
   final int titleMaxLines;
   final int subtitleMaxLines;
+  final DropType type;
 
   Drop({
     required this.title,
@@ -31,7 +34,7 @@ class Drop {
     this.curve = Curves.easeOutExpo,
     this.reverseCurve,
     this.subtitle,
-    this.icon,
+    IconData? icon,
     this.isDestructive = false,
     this.titleTextStyle,
     this.subtitleTextStyle,
@@ -39,10 +42,38 @@ class Drop {
     this.padding,
     this.shape = DropShape.pill,
     this.highContrastText = true,
-    this.iconColor,
+    Color? iconColor,
     this.titleMaxLines = 1,
     this.subtitleMaxLines = 1,
-  });
+    this.type = DropType.none,
+  }) : icon = icon ?? _getIconForType(type),
+       iconColor = iconColor ?? _getIconColorForType(type);
+
+  static IconData? _getIconForType(DropType type) {
+    switch (type) {
+      case DropType.success:
+        return Icons.check_circle;
+      case DropType.warning:
+        return Icons.warning;
+      case DropType.error:
+        return Icons.error;
+      case DropType.none:
+        return null;
+    }
+  }
+
+  static Color? _getIconColorForType(DropType type) {
+    switch (type) {
+      case DropType.success:
+        return Colors.green;
+      case DropType.warning:
+        return Colors.amber;
+      case DropType.error:
+        return Colors.red;
+      case DropType.none:
+        return null;
+    }
+  }
 
   void show(BuildContext context) {
     Drops._enqueue(this, context);
