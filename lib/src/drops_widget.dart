@@ -117,6 +117,7 @@ class Drops {
     Color? iconColor,
     int titleMaxLines = 1,
     int subtitleMaxLines = 1,
+    DropType type = DropType.none,
   }) {
     final drop = Drop(
       title: title,
@@ -137,6 +138,7 @@ class Drops {
       iconColor: iconColor,
       titleMaxLines: titleMaxLines,
       subtitleMaxLines: subtitleMaxLines,
+      type: type,
     );
 
     _enqueue(drop, context);
@@ -183,6 +185,14 @@ class Drops {
     );
 
     Overlay.of(context).insert(currentOverlay!);
+  }
+
+  static void showError(context, [String? error]) {
+    Drops.show(context, title: error.toString(), type: DropType.error);
+  }
+
+  static void showGoodNews(context, [String? news]) {
+    Drops.show(context, title: news.toString(), type: DropType.success);
   }
 }
 
@@ -409,6 +419,8 @@ class _DropsWidgetState extends State<_DropsWidget>
                                                     .resolveFrom(context),
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600,
+                                      ).copyWith(
+                                        decoration: TextDecoration.none,
                                       ),
                                   textAlign: TextAlign.center,
                                 ),
@@ -434,6 +446,8 @@ class _DropsWidgetState extends State<_DropsWidget>
                                                           .resolveFrom(context),
                                               fontSize: 14,
                                               fontWeight: FontWeight.w600,
+                                            ).copyWith(
+                                              decoration: TextDecoration.none,
                                             ),
                                         textAlign: TextAlign.center,
                                       ),
